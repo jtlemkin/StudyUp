@@ -28,6 +28,7 @@ public class EventServiceImpl implements EventService {
 		// Checks if an event date is before today, if no, then add to the active event list.
 		for (int i=0;i<eventData.size();i++) {
 			Event ithEvent= eventData.get(i);
+			System.out.println(ithEvent.getDate());
 			if(!ithEvent.getDate().before(new Date())) {
 				activeEvents.add(ithEvent);
 			}

@@ -23,6 +23,28 @@ import edu.studyup.util.StudyUpException;
 class EventServiceImplTest {
 
 	EventServiceImpl eventServiceImpl;
+	
+	static Event createTestEvent(int eventID, String eventName) {
+		//Create Student
+		Student student = new Student();
+		student.setFirstName("John");
+		student.setLastName("Doe");
+		student.setEmail("JohnDoe@email.com");
+		student.setId(1);
+				
+		//Create Event1
+		Event event = new Event();
+		event.setEventID(eventID);
+		event.setDate(new Date());
+		event.setName(eventName);
+		Location location = new Location(-122, 37);
+		event.setLocation(location);
+		List<Student> eventStudents = new ArrayList<>();
+		eventStudents.add(student);
+		event.setStudents(eventStudents);
+		
+		return event;
+	}
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -35,24 +57,7 @@ class EventServiceImplTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		eventServiceImpl = new EventServiceImpl();
-		//Create Student
-		Student student = new Student();
-		student.setFirstName("John");
-		student.setLastName("Doe");
-		student.setEmail("JohnDoe@email.com");
-		student.setId(1);
-		
-		//Create Event1
-		Event event = new Event();
-		event.setEventID(1);
-		event.setDate(new Date());
-		event.setName("Event 1");
-		Location location = new Location(-122, 37);
-		event.setLocation(location);
-		List<Student> eventStudents = new ArrayList<>();
-		eventStudents.add(student);
-		event.setStudents(eventStudents);
-		
+		Event event = createTestEvent(1, "Event 1");
 		DataStorage.eventData.put(event.getEventID(), event);
 	}
 
@@ -80,11 +85,15 @@ class EventServiceImplTest {
 	}
 	
 	@Test
-	void testUpdateMethod_event_null_badcases() {
-		Event event = null;
-		Assertions.assertThrows(StudyUpException.class, () -> {
-			eventServiceImpl.updateEvent(event);
-		});
+	void testGetActiveEvents_all_events_are_after_current_date() {
+		//Create Event2
+		Event pastEvent = createTestEvent(2, "Past event");
+		eventServiceImpl.updateEvent(pastEvent);
+		
+		List<Event> active_events = eventServiceImpl.getActiveEvents();
+		for(Event active_event: active_events) {
+			assertTrue(active_event.getDate().after(new Date()));
+		}
 	}
 
 }
