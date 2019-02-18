@@ -76,6 +76,67 @@ class EventServiceImplTest {
 		  });
 	}
 	
+	@Test
+	void getActiveEvents_allEventsAfterCurrentDate() {
+		Event pastEvent = new Event();
+		pastEvent.setEventID(2);
+		pastEvent.setDate(new Date(0));
+		
+		DataStorage.eventData.put(pastEvent.getEventID(), pastEvent);
+		
+		for(Event e: eventServiceImpl.getActiveEvents()) {
+			assertTrue(e.getDate().after(new Date()));
+		}
+	}
+	
+	@Test
+	void getActiveEvents_ensureNewEventInActiveEvents() {
+		Event futureEvent = new Event();
+		futureEvent.setEventID(2);
+		futureEvent.setDate(new Date((long) (System.currentTimeMillis() * 1.5)));
+		
+		DataStorage.eventData.put(futureEvent.getEventID(), futureEvent);
+		
+		assertTrue(eventServiceImpl.getActiveEvents().contains(futureEvent));
+	}
+	
+	@Test
+	void getPastEvents_allEventsBeforeCurrentDate() {
+		Event futureEvent = new Event();
+		futureEvent.setEventID(2);
+		futureEvent.setDate(new Date((long) (System.currentTimeMillis() * 1.5)));
+		
+		DataStorage.eventData.put(futureEvent.getEventID(), futureEvent);
+		
+		for(Event e: eventServiceImpl.getPastEvents()) {
+			assertTrue(e.getDate().before(new Date()));
+		}
+	}
+	
+	@Test
+	void getPastEvents_ensurePastEventInGetPastEvents() {
+		Event pastEvent = new Event();
+		pastEvent.setEventID(2);
+		pastEvent.setDate(new Date(0));
+		
+		DataStorage.eventData.put(pastEvent.getEventID(), pastEvent);
+		
+		assertTrue(eventServiceImpl.getPastEvents().contains(pastEvent));
+	}
+	
+	@Test
+	void deleteEvent_makeSureEventNotInDataStorage() {
+		eventServiceImpl.deleteEvent(1);
+		
+		assertFalse(DataStorage.eventData.containsKey(1));
+	}
+	
+	@Test
+	void deleteEvent_returnsDeletedEvent() {
+		Event event1 = DataStorage.eventData.get(1);
+		assertTrue(eventServiceImpl.deleteEvent(1) == event1);
+	}
+
 	@Test // NEW TEST
 	void testUpdateEvent_testName_badCase() throws StudyUpException {
 		int eventID = 1;

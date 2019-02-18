@@ -41,6 +41,7 @@ public class EventServiceImpl implements EventService {
 		return activeEvents;
 	}
 
+
 	@Override
 	public List<Event> getPastEvents() {
 		Map<Integer, Event> eventData = DataStorage.eventData;
