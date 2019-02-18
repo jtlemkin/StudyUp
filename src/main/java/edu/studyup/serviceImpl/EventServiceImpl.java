@@ -63,9 +63,11 @@ public class EventServiceImpl implements EventService {
 			throw new StudyUpException("No event found.");
 		}
 		List<Student> presentStudents = event.getStudents();
+		
 		if(presentStudents == null) {
 			presentStudents = new ArrayList<>();
 		}
+		
 		presentStudents.add(student);
 		event.setStudents(presentStudents);		
 		return DataStorage.eventData.put(eventID, event);
