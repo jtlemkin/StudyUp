@@ -50,7 +50,9 @@ public class Event {
 	}
 
 	public void setDate(Date date) {
-		this.date = date;
+		if(date != null) {
+			this.date = (Date) date.clone();
+		}
 	}
 
 	public int getEventID() {
