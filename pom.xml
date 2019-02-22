@@ -72,8 +72,29 @@
 			        </execution>
 			    </executions>
 			</plugin>
-		</plugins>
+			<plugin>
+			  <groupId>com.github.spotbugs</groupId>
+			  <artifactId>spotbugs-maven-plugin</artifactId>
+			  <version>3.1.10</version>
+			  <dependencies>
+			    <dependency>
+			      <groupId>com.github.spotbugs</groupId>
+			      <artifactId>spotbugs</artifactId>
+			      <version>3.1.11</version>
+			    </dependency>
+			  </dependencies>
+			</plugin>
+		</plugins>	
 	</build>
+	<reporting>
+        <plugins>
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>3.1.8</version>
+            </plugin>
+        </plugins>
+    </reporting>
 	<dependencies>
 		<dependency>
             <groupId>org.junit.platform</groupId>
