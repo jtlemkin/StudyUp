@@ -6,7 +6,6 @@ then
         echo "server is already located at $1"
 fi
 
-sed -i'' "s/34.73.56.224/$1/" /etc/nginx/nginx.conf
-sed -i'' "s/127.0.0.1/$1/" /etc/nginx/nginx.conf
+sed -i'' "s/(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/$1/" /etc/nginx/nginx.conf
 
 /usr/sbin/nginx -s reload
